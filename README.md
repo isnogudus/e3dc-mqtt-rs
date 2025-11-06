@@ -23,6 +23,8 @@ A high-performance MQTT bridge for E3DC solar battery systems, written in Rust.
 
 ### From Source
 
+**Note:** This project is currently only available from source, as it depends on the optimized `rscp` library which is not yet published on crates.io.
+
 ```bash
 git clone https://github.com/isnogudus/e3dc-mqtt-rs.git
 cd e3dc-mqtt-rs
