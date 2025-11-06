@@ -1,0 +1,22 @@
+# E3DC MQTT Bridge Configuration
+
+[default]
+log_level = "INFO"
+
+[e3dc]
+host = "192.168.1.100"
+username = "user@example.com"
+password = "your-password"
+key = "your-rscp-key"
+interval = "5s"
+statistic_update_interval = "5m"
+
+[mqtt]
+root = "e3dc"
+# TCP connection
+host = "mqtt.example.com"
+port = 8883
+# Unix socket (if set, host/port are ignored)
+# socket = "/var/run/mosquitto/mosquitto.sock"
+username = "mqtt-user"
+password = "mqtt-password"

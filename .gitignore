@@ -1,0 +1,23 @@
+# Rust build artifacts
+/target
+
+# Configuration files (may contain secrets)
+config.toml
+
+# Log files
+*.log
+
+# Editor and IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*.swn
+*~
+
+# macOS
+.DS_Store
+
+# Backup files
+*.bak
+*.tmp
