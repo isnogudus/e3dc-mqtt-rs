@@ -15,6 +15,16 @@ version = "0.1.0"
 name = "e3dc_mqtt_rs"
 path = "src/lib.rs"
 
+[[bin]]
+name = "e3dc-mqtt-rs"
+path = "src/main.rs"
+
+[profile.release]
+codegen-units = 1 # Better optimization
+lto = true # Link-Time Optimization
+opt-level = "z" # Optimize for size
+strip = true # Remove debug symbols
+
 [dependencies]
 # E3DC Communication
 rscp = {git = "https://github.com/isnogudus/rscp.git", branch = "optimize-read-performance"}
