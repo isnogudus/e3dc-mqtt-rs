@@ -9,7 +9,7 @@ license = "MIT"
 name = "e3dc-mqtt-rs"
 readme = "README.md"
 repository = "https://github.com/isnogudus/e3dc-mqtt-rs"
-version = "0.1.0"
+version = "0.1.1"
 
 [lib]
 name = "e3dc_mqtt_rs"
