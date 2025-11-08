@@ -36,7 +36,4 @@ pub enum MqttError {
 
     #[error("Failed to serialize data: {error:?}")]
     SerializationError { error: serde_json::Error },
-
-    #[error("MQTT client error: {0}")]
-    ClientError(String),
 }

@@ -120,15 +120,12 @@ pub struct MqttConfig {
     #[serde(default = "default_mqtt_root")]
     pub root: String,
 
-    /// MQTT broker hostname (optional if using Unix socket)
-    pub host: Option<String>,
+    /// MQTT broker hostname
+    pub host: String,
 
-    /// MQTT broker port (default 8883 for TLS)
+    /// MQTT broker port (default 1883)
     #[serde(default = "default_mqtt_port")]
     pub port: u16,
-
-    /// Unix domain socket path (optional, takes precedence over host/port)
-    pub socket: Option<String>,
 
     /// MQTT username (required)
     pub username: String,
@@ -142,7 +139,7 @@ fn default_mqtt_root() -> String {
 }
 
 fn default_mqtt_port() -> u16 {
-    8883
+    1883
 }
 
 impl std::fmt::Debug for MqttConfig {
@@ -150,7 +147,6 @@ impl std::fmt::Debug for MqttConfig {
         f.debug_struct("MqttConfig")
             .field("host", &self.host)
             .field("port", &self.port)
-            .field("socket", &self.socket)
             .field("username", &self.username)
             .field("password", &"***REDACTED***")
             .field("root", &self.root)
@@ -190,10 +186,10 @@ impl Config {
     fn validate(&self) -> Result<(), ConfigError> {
         // Duration is always positive by type, no need to validate intervals
 
-        // Validate that either socket or host is provided for MQTT
-        if self.mqtt.socket.is_none() && self.mqtt.host.is_none() {
+        // Validate MQTT host is not empty
+        if self.mqtt.host.is_empty() {
             return Err(ConfigError::ValidationError(
-                "mqtt.host or mqtt.socket must be set".to_string(),
+                "mqtt.host must not be empty".to_string(),
             ));
         }
 

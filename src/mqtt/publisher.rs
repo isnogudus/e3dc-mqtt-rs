@@ -23,21 +23,9 @@ impl MqttPublisher {
     pub fn new(config: &Config, device_id: String) -> Result<Self, MqttError> {
         let client_id = format!("e3dc-mqtt-rs-{}", device_id);
 
-        let mut mqtt_options = if let Some(socket_path) = &config.mqtt.socket {
-            // Unix domain socket connection
-            tracing::info!("Using MQTT Unix socket: {}", socket_path);
-            MqttOptions::new(client_id, socket_path, 0)
-        } else {
-            // TCP connection
-            let host = config
-                .mqtt
-                .host
-                .as_ref()
-                .ok_or_else(|| MqttError::ClientError("MQTT host or socket must be configured".to_string()))?;
-
-            tracing::info!("Using MQTT TCP connection: {}:{}", host, config.mqtt.port);
-            MqttOptions::new(client_id, host, config.mqtt.port)
-        };
+        let host = &config.mqtt.host;
+        tracing::info!("Connecting to MQTT broker at {}:{}", host, config.mqtt.port);
+        let mut mqtt_options = MqttOptions::new(client_id, host, config.mqtt.port);
 
         if !config.mqtt.username.is_empty() {
             mqtt_options.set_credentials(&config.mqtt.username, &config.mqtt.password);

@@ -12,9 +12,8 @@ use chrono::{Utc, TimeZone};
 fn test_mqtt_config_debug_redacts_password() {
     let config = MqttConfig {
         root: "e3dc".to_string(),
-        host: Some("mqtt.example.com".to_string()),
+        host: "mqtt.example.com".to_string(),
         port: 1883,
-        socket: None,
         username: "test-user".to_string(),
         password: "secret-password".to_string(),
     };
@@ -162,24 +161,6 @@ fn test_mqtt_error_publish_failed() {
 // ============================================================================
 
 #[test]
-fn test_config_mqtt_socket_priority() {
-    // When both socket and host are provided, socket should take precedence
-    // This is tested implicitly by the validation logic
-    let config = MqttConfig {
-        root: "e3dc".to_string(),
-        host: Some("mqtt.example.com".to_string()),
-        port: 1883,
-        socket: Some("/var/run/mqtt.sock".to_string()),
-        username: "test".to_string(),
-        password: "test".to_string(),
-    };
-
-    // Both should be valid
-    assert!(config.socket.is_some());
-    assert!(config.host.is_some());
-}
-
-#[test]
 fn test_duration_formats() {
     // Test that our config uses std::time::Duration which works with serde
     let duration = Duration::from_secs(60);
@@ -235,9 +216,8 @@ fn test_config_empty_strings() {
     // Test that empty username/password are handled
     let config = MqttConfig {
         root: "".to_string(),  // Empty root should be allowed
-        host: Some("mqtt.example.com".to_string()),
+        host: "mqtt.example.com".to_string(),
         port: 1883,
-        socket: None,
         username: "".to_string(),
         password: "".to_string(),
     };
@@ -252,9 +232,8 @@ fn test_config_port_ranges() {
     // Test various port numbers
     let config = MqttConfig {
         root: "e3dc".to_string(),
-        host: Some("mqtt.example.com".to_string()),
+        host: "mqtt.example.com".to_string(),
         port: 1, // Minimum valid port
-        socket: None,
         username: "test".to_string(),
         password: "test".to_string(),
     };
@@ -262,9 +241,8 @@ fn test_config_port_ranges() {
 
     let config = MqttConfig {
         root: "e3dc".to_string(),
-        host: Some("mqtt.example.com".to_string()),
+        host: "mqtt.example.com".to_string(),
         port: 65535, // Maximum valid port
-        socket: None,
         username: "test".to_string(),
         password: "test".to_string(),
     };
@@ -272,9 +250,8 @@ fn test_config_port_ranges() {
 
     let config = MqttConfig {
         root: "e3dc".to_string(),
-        host: Some("mqtt.example.com".to_string()),
+        host: "mqtt.example.com".to_string(),
         port: 8883, // Common TLS port
-        socket: None,
         username: "test".to_string(),
         password: "test".to_string(),
     };

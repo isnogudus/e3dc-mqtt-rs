@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Initial release of e3dc-mqtt-rs
 - MQTT bridge for E3DC solar battery systems using RSCP protocol
 - Real-time monitoring of system status, battery, grid, solar, and wallbox data
-- Support for both TCP and Unix domain socket MQTT connections
+- TCP MQTT connection support (port 1883 or 8883 for TLS)
 - Change detection to minimize MQTT traffic (only publish changed values)
 - Configurable polling intervals for regular status and statistics data
 - Comprehensive logging with configurable log levels

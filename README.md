@@ -50,49 +50,11 @@ interval = "5s"                   # Status update interval
 statistic_update_interval = "60s" # Statistics update interval
 
 [mqtt]
+host = "mqtt.example.com"         # MQTT broker hostname
+port = 1883                       # MQTT broker port (1883 or 8883 for TLS)
 root = "e3dc"                     # MQTT root topic
 username = "mqtt-user"            # MQTT username
 password = "mqtt-password"        # MQTT password
-
-# Connection: Choose either TCP or Unix socket
-# Option 1: TCP connection (recommended for remote brokers)
-host = "mqtt.example.com"         # MQTT broker hostname
-port = 1883                       # MQTT broker port (1883 or 8883 for TLS)
-
-# Option 2: Unix domain socket (recommended for local brokers)
-# socket = "/run/mosquitto/mosquitto.sock"  # Takes precedence over host/port
-```
-
-### MQTT Connection Types
-
-The bridge supports two connection types:
-
-**Unix Domain Socket** (preferred for local broker):
-```toml
-[mqtt]
-socket = "/run/mosquitto/mosquitto.sock"
-username = "mqtt-user"
-password = "mqtt-password"
-root = "e3dc"
-```
-
-Benefits:
-- Better performance (no TCP overhead)
-- More secure (filesystem permissions)
-- No port configuration needed
-- Lower latency
-
-**TCP Connection** (for remote brokers):
-```toml
-[mqtt]
-host = "mqtt.example.com"
-port = 1883  # or 8883 for TLS
-username = "mqtt-user"
-password = "mqtt-password"
-root = "e3dc"
-```
-
-**Note:** If `socket` is specified, it takes precedence over `host`/`port`.
 ```
 
 ## Usage
@@ -368,7 +330,6 @@ cargo tree
 
 - Store `config.toml` with restricted permissions (0600)
 - Use TLS for MQTT connection (port 8883)
-- Consider using Unix socket for local MQTT broker
 - Credentials are never logged (redacted in debug output)
 - No remote access - runs locally on your network
 
