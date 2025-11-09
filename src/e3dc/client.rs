@@ -921,3 +921,14 @@ impl E3dcClient {
         })
     }
 }
+
+impl Drop for E3dcClient {
+    fn drop(&mut self) {
+        tracing::info!("Disconnecting E3DC client...");
+        if let Err(e) = self.client.disconnect() {
+            tracing::warn!("Error disconnecting E3DC: {:?}", e);
+        } else {
+            tracing::info!("E3DC client disconnected");
+        }
+    }
+}

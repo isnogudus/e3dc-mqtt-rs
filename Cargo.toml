@@ -51,3 +51,6 @@ tracing-subscriber = {version = "0.3", features = ["env-filter"]}
 # Time handling
 chrono = {version = "0.4", features = ["serde"]}
 humantime-serde = "1.1"
+
+# Signal handling
+ctrlc = "3.4"

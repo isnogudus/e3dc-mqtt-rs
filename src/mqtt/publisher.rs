@@ -248,3 +248,15 @@ impl MqttPublisher {
         Ok(())
     }
 }
+
+impl Drop for MqttPublisher {
+    fn drop(&mut self) {
+        tracing::info!("Disconnecting MQTT client...");
+        // Publish offline status before disconnecting
+        if let Err(e) = self.publish_online_status(false) {
+            tracing::warn!("Failed to publish offline status during shutdown: {:?}", e);
+        }
+        // Client disconnect happens automatically when dropped
+        tracing::info!("MQTT client disconnected");
+    }
+}

@@ -100,6 +100,13 @@ fn main() -> anyhow::Result<()> {
     mqtt_publisher.publish_online_status(true)?;
     info!("✓ Published online status");
 
+    // Setup signal handler for graceful shutdown
+    ctrlc::set_handler(move || {
+        info!("Received shutdown signal (SIGTERM/SIGINT), exiting...");
+        std::process::exit(0);
+    })
+    .expect("Error setting signal handler");
+
     // Publish initial system info
     mqtt_publisher.publish_system_info(&mqtt::SystemInfo::from_e3dc(&system_info))?;
     info!("✓ Published system info");

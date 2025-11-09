@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- Graceful shutdown with SIGTERM/SIGINT signal handling
+- Drop trait implementations for clean resource cleanup
+- E3DC client disconnects gracefully on shutdown
+- MQTT client publishes offline status before disconnecting
+
+### Changed
+- Added `ctrlc` dependency for cross-platform signal handling
+
 ## [0.1.2] - 2025-11-09
 
 ### Added
