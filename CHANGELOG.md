@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.3] - 2025-11-09
+
 ### Added
 - Graceful shutdown with SIGTERM/SIGINT signal handling
 - Drop trait implementations for clean resource cleanup
@@ -75,6 +77,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Blocking I/O for simplicity and reliability
 - Synchronous design with single background thread for MQTT event loop
 
-[Unreleased]: https://github.com/isnogudus/e3dc-mqtt-rs/compare/v0.1.2...HEAD
-[0.1.2]: https://github.com/isnogudus/e3dc-mqtt-rs/compare/v0.1.0...v0.1.2
+[Unreleased]: https://github.com/isnogudus/e3dc-mqtt-rs/compare/v0.1.3...HEAD
+[0.1.3]: https://github.com/isnogudus/e3dc-mqtt-rs/compare/v0.1.2...v0.1.3
+[0.1.2]: https://github.com/isnogudus/e3dc-mqtt-rs/compare/v0.1.1...v0.1.2
+[0.1.1]: https://github.com/isnogudus/e3dc-mqtt-rs/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/isnogudus/e3dc-mqtt-rs/releases/tag/v0.1.0
