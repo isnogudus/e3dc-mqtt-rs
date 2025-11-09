@@ -14,6 +14,7 @@ fn test_mqtt_config_debug_redacts_password() {
         root: "e3dc".to_string(),
         host: "mqtt.example.com".to_string(),
         port: 1883,
+        client_id: None,
         username: "test-user".to_string(),
         password: "secret-password".to_string(),
     };
@@ -207,7 +208,10 @@ fn test_error_type_implements_std_error() {
     let e3dc_err = E3dcError::MissingTag(1);
     let _: &dyn std::error::Error = &e3dc_err;
 
-    let mqtt_err = MqttError::ClientError("test".to_string());
+    let mqtt_err = MqttError::PublishFailed {
+        topic: "test/topic".to_string(),
+        reason: "test error".to_string(),
+    };
     let _: &dyn std::error::Error = &mqtt_err;
 }
 
@@ -218,6 +222,7 @@ fn test_config_empty_strings() {
         root: "".to_string(),  // Empty root should be allowed
         host: "mqtt.example.com".to_string(),
         port: 1883,
+        client_id: None,
         username: "".to_string(),
         password: "".to_string(),
     };
@@ -234,6 +239,7 @@ fn test_config_port_ranges() {
         root: "e3dc".to_string(),
         host: "mqtt.example.com".to_string(),
         port: 1, // Minimum valid port
+        client_id: None,
         username: "test".to_string(),
         password: "test".to_string(),
     };
@@ -243,6 +249,7 @@ fn test_config_port_ranges() {
         root: "e3dc".to_string(),
         host: "mqtt.example.com".to_string(),
         port: 65535, // Maximum valid port
+        client_id: None,
         username: "test".to_string(),
         password: "test".to_string(),
     };
@@ -252,8 +259,10 @@ fn test_config_port_ranges() {
         root: "e3dc".to_string(),
         host: "mqtt.example.com".to_string(),
         port: 8883, // Common TLS port
+        client_id: Some("custom-id".to_string()),
         username: "test".to_string(),
         password: "test".to_string(),
     };
     assert_eq!(config.port, 8883);
+    assert_eq!(config.client_id, Some("custom-id".to_string()));
 }

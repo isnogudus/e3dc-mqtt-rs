@@ -127,6 +127,10 @@ pub struct MqttConfig {
     #[serde(default = "default_mqtt_port")]
     pub port: u16,
 
+    /// MQTT client ID (optional, defaults to "e3dc-mqtt-rs-{device-id}")
+    /// Set different IDs to run multiple instances against the same E3DC
+    pub client_id: Option<String>,
+
     /// MQTT username (required)
     pub username: String,
 
@@ -147,6 +151,7 @@ impl std::fmt::Debug for MqttConfig {
         f.debug_struct("MqttConfig")
             .field("host", &self.host)
             .field("port", &self.port)
+            .field("client_id", &self.client_id)
             .field("username", &self.username)
             .field("password", &"***REDACTED***")
             .field("root", &self.root)

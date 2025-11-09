@@ -7,6 +7,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.2] - 2025-11-09
+
+### Added
+- Optional `client_id` configuration for MQTT connections
+- Support for running multiple instances against the same E3DC system
+- Documentation for running multiple instances with different configurations
+
+### Fixed
+- Fixed process not responding to SIGTERM/SIGINT (now terminates cleanly with `kill`)
+
+### Changed
+- Improved MQTT connection logging to include client ID
+
+## [0.1.1] - 2025-11-08
+
+### Fixed
+- Removed Unix socket support (not supported by rumqttc MQTT client library)
+- Removed unused `MqttError::ClientError` variant
+
+### Changed
+- Default MQTT port changed from 8883 to 1883 (non-TLS default)
+
 ## [0.1.0] - 2025-11-06
 
 ### Added
@@ -44,5 +66,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Blocking I/O for simplicity and reliability
 - Synchronous design with single background thread for MQTT event loop
 
-[Unreleased]: https://github.com/isnogudus/e3dc-mqtt-rs/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/isnogudus/e3dc-mqtt-rs/compare/v0.1.2...HEAD
+[0.1.2]: https://github.com/isnogudus/e3dc-mqtt-rs/compare/v0.1.0...v0.1.2
 [0.1.0]: https://github.com/isnogudus/e3dc-mqtt-rs/releases/tag/v0.1.0

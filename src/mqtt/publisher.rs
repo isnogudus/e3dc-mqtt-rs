@@ -21,10 +21,15 @@ macro_rules! publish_if_changed {
 
 impl MqttPublisher {
     pub fn new(config: &Config, device_id: String) -> Result<Self, MqttError> {
-        let client_id = format!("e3dc-mqtt-rs-{}", device_id);
+        // Use custom client_id if provided, otherwise default to e3dc-mqtt-rs-{device_id}
+        let client_id = config
+            .mqtt
+            .client_id
+            .clone()
+            .unwrap_or_else(|| format!("e3dc-mqtt-rs-{}", device_id));
 
         let host = &config.mqtt.host;
-        tracing::info!("Connecting to MQTT broker at {}:{}", host, config.mqtt.port);
+        tracing::info!("Connecting to MQTT broker at {}:{} with client ID '{}'", host, config.mqtt.port, client_id);
         let mut mqtt_options = MqttOptions::new(client_id, host, config.mqtt.port);
 
         if !config.mqtt.username.is_empty() {
@@ -46,21 +51,26 @@ impl MqttPublisher {
         let (client, mut connection) = Client::new(mqtt_options, 10);
 
         // Spawn event loop in background thread (not tokio task!)
-        thread::spawn(move || {
-            for notification in connection.iter() {
-                match notification {
-                    Ok(Event::Incoming(Packet::ConnAck(_))) => {
-                        tracing::info!("MQTT connected");
-                    }
-                    Ok(_) => {}
-                    Err(e) => {
-                        // On connection error, crash the process (let it crash philosophy)
-                        tracing::error!("MQTT connection error: {:?}", e);
-                        std::process::exit(1);
+        // Note: This thread will be forcibly terminated when the main thread exits.
+        // This is intentional for "let it crash" philosophy - no graceful shutdown needed.
+        thread::Builder::new()
+            .name("mqtt-event-loop".to_string())
+            .spawn(move || {
+                for notification in connection.iter() {
+                    match notification {
+                        Ok(Event::Incoming(Packet::ConnAck(_))) => {
+                            tracing::info!("MQTT connected");
+                        }
+                        Ok(_) => {}
+                        Err(e) => {
+                            // On connection error, crash the process (let it crash philosophy)
+                            tracing::error!("MQTT connection error: {:?}", e);
+                            std::process::exit(1);
+                        }
                     }
                 }
-            }
-        });
+            })
+            .expect("Failed to spawn MQTT event loop thread");
         let root_topic = format!("{}/{}", config.mqtt.root, device_id);
 
         Ok(Self { client, root_topic })

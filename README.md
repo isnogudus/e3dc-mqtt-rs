@@ -55,6 +55,9 @@ port = 1883                       # MQTT broker port (1883 or 8883 for TLS)
 root = "e3dc"                     # MQTT root topic
 username = "mqtt-user"            # MQTT username
 password = "mqtt-password"        # MQTT password
+# client_id = "e3dc-instance-1"   # Optional: Custom MQTT client ID
+                                  # Default: "e3dc-mqtt-rs-{device-id}"
+                                  # Set different IDs to run multiple instances
 ```
 
 ## Usage
@@ -111,6 +114,34 @@ ENTRYPOINT ["/usr/local/bin/e3dc-mqtt-rs"]
 docker build -t e3dc-mqtt-rs .
 docker run -v $(pwd)/config.toml:/config.toml e3dc-mqtt-rs --config /config.toml
 ```
+
+### Running Multiple Instances
+
+To run multiple instances against the same E3DC system (e.g., with different polling intervals or MQTT topics), set unique MQTT client IDs in each config file:
+
+**config1.toml:**
+```toml
+[mqtt]
+client_id = "e3dc-instance-1"
+root = "e3dc/fast"
+# ... other settings ...
+
+[e3dc]
+interval = "5s"
+```
+
+**config2.toml:**
+```toml
+[mqtt]
+client_id = "e3dc-instance-2"
+root = "e3dc/slow"
+# ... other settings ...
+
+[e3dc]
+interval = "60s"
+```
+
+Each instance will maintain its own independent MQTT connection to the broker.
 
 ## MQTT Topics
 
